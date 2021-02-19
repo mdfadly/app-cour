@@ -6,6 +6,9 @@ import TextField from "@material-ui/core/TextField";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import TableComp from "../../components/Table/Table";
+import dateFormat from "dateformat";
+import Swal from "sweetalert2";
 
 const useStyles = makeStyles((theme) => ({}));
 function Dashboard() {
@@ -20,23 +23,31 @@ function Dashboard() {
     { status: false, label: "Tidak Aktif" },
   ]);
   const data = [
-      {noBatch: "DPC-BCH-34-210217-012", noBatchBefore: "-", tipeBatch:"Rin1", tglBatch:"01-01-2021", request:0},
-      {noBatch: "DPC-BCH-34-210217-011", noBatchBefore: "-", tipeBatch:"Rin1", tglBatch:"19-01-2021", request:0},
-  ]
-  const columns = [
-    { name: "noBatch", label: "No Batch" },
-    { name: "noBatchBefore", label: "No Batch Sebelumnya" },
-    { name: "tipeBatch", label: "Tipe Batch" },
     {
-      name: "tglBatch",
-      label: "Tanggal Batch",
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return dateFormat(value, "mmmm dS, yyyy");
-        },
-      },
+      noBatch: "DPC-BCH-34-210217-012",
+      noBatchBefore: "-",
+      tipeBatch: "Rin1",
+      tglBatch: "01-01-2021",
+      request: 0,
     },
-    { name: "request", label: "Jumlah Request" },
+    {
+      noBatch: "DPC-BCH-34-210217-011",
+      noBatchBefore: "-",
+      tipeBatch: "Rin1",
+      tglBatch: "19-01-2021",
+      request: 0,
+    },
+  ];
+  const columns = [
+    { field: "noBatch", title: "No Batch" },
+    { field: "noBatchBefore", title: "No Batch Sebelumnya" },
+    { field: "tipeBatch", title: "Tipe Batch" },
+    {
+      field: "tglBatch",
+      title: "Tanggal Batch",
+      render: (rowData) => dateFormat(rowData.lastUpdate, "mmmm dS, yyyy"),
+    },
+    { field: "request", title: "Jumlah Request" },
   ];
   const handleUpdate = (i) => {};
   const handleRemove = (i) => {
@@ -97,9 +108,10 @@ function Dashboard() {
             <TableComp
               allData={data}
               allColumns={columns}
-              title="Table Film"
-              handleUpdate={handleUpdate}
+              startEditing={handleUpdate}
               handleRemove={handleRemove}
+              formData="film"
+              title="Table Film"
             />
           </Grid>
         </Paper>
